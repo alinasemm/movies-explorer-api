@@ -9,7 +9,7 @@ module.exports.getSavedMovies = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
-  Movie.create({ ...req.body, owner: req.user })
+  Movie.create({ ...req.body, owner: req.user._id })
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -24,7 +24,7 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(req.params.movieId)
     .orFail()
     .then((movie) => {
-      if (req.user === movie.owner.toString()) {
+      if (req.user._id === movie.owner.toString()) {
         return Movie.findByIdAndRemove(req.params.movieId);
       }
 

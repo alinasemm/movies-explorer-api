@@ -1,4 +1,7 @@
 const Movie = require('../models/movie');
+const IncorrectDataError = require('../errors/incorrectDataError');
+const AccessDeniedError = require('../errors/accessDeniedError');
+const NotFoundError = require('../errors/notFoundError');
 
 module.exports.getSavedMovies = (req, res, next) => {
   Movie.find({})
@@ -37,11 +40,11 @@ module.exports.deleteMovie = (req, res, next) => {
         return;
       }
       if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError('Карточка по указанному _id не найдена'));
+        next(new NotFoundError('Фильм по указанному _id не найден'));
         return;
       }
       if (err.name === 'CastError') {
-        next(new IncorrectDataError('Переданы некорректные данные при удалении карточки'));
+        next(new IncorrectDataError('Переданы некорректные данные при удалении фильма'));
         return;
       }
       next(err);

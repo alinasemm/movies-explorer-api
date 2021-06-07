@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const { celebrate, Joi, errors } = require('celebrate');
 const user = require('./ routes/users');
 const movies = require('./ routes/movies');
 const { login, createUser } = require('./controllers/user');
@@ -22,11 +23,25 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
 const app = express();
 app.use(express.json());
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+}), login);
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+}), createUser);
 
 app.use('/users', auth, user);
 app.use('/movies', auth, movies);
+
+app.use(errors());
 
 app.use((req, res, next) => {
   next(new NotFoundError('Ресурс запроса не найден'));

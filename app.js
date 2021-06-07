@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const user = require('./ routes/users');
@@ -6,15 +8,19 @@ const { login, createUser } = require('./controllers/user');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/notFoundError');
 
-const app = express();
+mongoose.set('toObject', { useProjection: true });
+mongoose.set('toJSON', { useProjection: true });
 
 ///временно!
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+
+const app = express();
+app.use(express.json());
 
 app.post('/signin', login);
 app.post('/signup', createUser);

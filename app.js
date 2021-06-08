@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { celebrate, Joi, errors } = require('celebrate');
 const user = require('./ routes/users');
 const movies = require('./ routes/movies');
@@ -22,6 +23,7 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
 
 const app = express();
 app.use(express.json());
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -41,6 +43,7 @@ app.post('/signup', celebrate({
 app.use('/users', auth, user);
 app.use('/movies', auth, movies);
 
+app.use(errorLogger);
 app.use(errors());
 
 app.use((req, res, next) => {

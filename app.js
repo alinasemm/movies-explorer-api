@@ -2,8 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { celebrate, Joi, errors } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const user = require('./ routes/users');
 const movies = require('./ routes/movies');
 const { login, createUser } = require('./controllers/user');

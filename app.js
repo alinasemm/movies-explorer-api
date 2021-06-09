@@ -13,7 +13,6 @@ const NotFoundError = require('./errors/notFoundError');
 mongoose.set('toObject', { useProjection: true });
 mongoose.set('toJSON', { useProjection: true });
 
-///временно!
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -57,5 +56,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-///временно!
-app.listen(3000);
+app.listen(3001);

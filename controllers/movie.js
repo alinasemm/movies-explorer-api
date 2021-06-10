@@ -24,11 +24,11 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.movieId)
+  Movie.findById(req.params.id)
     .orFail()
     .then((movie) => {
       if (req.user._id === movie.owner.toString()) {
-        return Movie.findByIdAndRemove(req.params.movieId);
+        return Movie.findByIdAndRemove(req.params.id);
       }
 
       throw new AccessDeniedError();

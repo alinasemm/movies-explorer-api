@@ -8,7 +8,7 @@ router.get('/:userId', celebrate({
   }),
 }), getUser);
 
-router.patch('/me', celebrate({
+router.patch('/:userId', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     email: Joi.string().email().required(),

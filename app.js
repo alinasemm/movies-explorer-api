@@ -55,11 +55,11 @@ app.use((req, res, next) => {
   next(new NotFoundError('Ресурс запроса не найден'));
 });
 
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).send({
     message: err.message || 'На сервере произошла ошибка',
   });
+  next();
 });
 
 app.listen(3001);

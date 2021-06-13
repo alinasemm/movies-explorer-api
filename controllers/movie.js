@@ -31,14 +31,10 @@ module.exports.deleteMovie = (req, res, next) => {
         return Movie.findByIdAndRemove(req.params.id);
       }
 
-      throw new AccessDeniedError();
+      throw new AccessDeniedError('Нет прав для удаления фильма');
     })
     .then((movie) => res.send(movie))
     .catch((err) => {
-      if (err.name === 'AccessDeniedError') {
-        next(err);
-        return;
-      }
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Фильм по указанному _id не найден'));
         return;

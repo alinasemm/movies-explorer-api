@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -25,7 +26,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (imageUrl) => /^https?:\/\/(www.)?[\d\w-._~:/?#[\]@!$&'()*+,;=]+#?/g.test(imageUrl),
+      validator: (imageUrl) => validator.isURL(imageUrl),
       message: 'Некорректная ссылка на изображение',
     },
   },
@@ -33,7 +34,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (trailerUrl) => /^https?:\/\/(www.)?[\d\w-._~:/?#[\]@!$&'()*+,;=]+#?/g.test(trailerUrl),
+      validator: (trailerUrl) => validator.isURL(trailerUrl),
       message: 'Некорректная ссылка на трейлер',
     },
   },
@@ -41,7 +42,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (thumbnailUrl) => /^https?:\/\/(www.)?[\d\w-._~:/?#[\]@!$&'()*+,;=]+#?/g.test(thumbnailUrl),
+      validator: (thumbnailUrl) => validator.isURL(thumbnailUrl),
       message: 'Некорректная ссылка на миниатюрное изображение постера к фильму',
     },
   },

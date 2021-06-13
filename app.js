@@ -9,7 +9,10 @@ const routes = require('./ routes');
 mongoose.set('toObject', { useProjection: true });
 mongoose.set('toJSON', { useProjection: true });
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+const { NODE_ENV, DATABASE_URL } = process.env;
+const databaseUrl = NODE_ENV === 'production' ? DATABASE_URL : 'mongodb://localhost:27017/bitfilmsdb';
+
+mongoose.connect(databaseUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -27,7 +30,7 @@ app.use(errors());
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).send({
-    message: err.message || 'На сервере произошла ошибка',
+    message: err.statusCode ? err.message : 'На сервере произошла ошибка',
   });
   next();
 });

@@ -79,9 +79,7 @@ module.exports.updateUserInformation = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        res.status(404).send({
-          message: 'Такой пользователь не найден',
-        });
+        next(new NotFoundError('Такой пользователь не найден'));
         return;
       }
       res.send(user);

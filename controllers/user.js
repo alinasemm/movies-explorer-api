@@ -74,14 +74,9 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.updateUserInformation = (req, res, next) => {
-  let { userId } = req.params;
-  if (userId === 'me') {
-    userId = req.user._id;
-  }
-
   const { name, email } = req.body;
 
-  User.findByIdAndUpdate(userId, { name, email }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         res.status(404).send({

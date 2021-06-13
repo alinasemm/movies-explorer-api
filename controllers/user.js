@@ -89,7 +89,7 @@ module.exports.updateUserInformation = (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      if (['CastError', 'ValidationError'].includes(err.name)) {
+      if (err.name === 'ValidationError') {
         next(new IncorrectDataError('Переданы некорректные данные при обновлении информации о пользователе.'));
         return;
       }

@@ -6,6 +6,10 @@ const InvalidCredentialsError = require('../errors/invalidCredentialsError');
 const NotFoundError = require('../errors/notFoundError');
 const DuplicateDataError = require('../errors/duplicateDataError');
 
+function isDuplicate(err) {
+  return err.name === 'MongoError' && err.code === 11000;
+}
+
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -64,7 +68,7 @@ module.exports.createUser = (req, res, next) => {
         return;
       }
 
-      if (err.name === 'MongoError' && err.code === 11000) {
+      if (isDuplicate(err)) {
         next(new DuplicateDataError('Такой email уже существует'));
         return;
       }
@@ -89,6 +93,12 @@ module.exports.updateUserInformation = (req, res, next) => {
         next(new IncorrectDataError('Переданы некорректные данные при обновлении информации о пользователе.'));
         return;
       }
+
+      if (isDuplicate(err)) {
+        next(new DuplicateDataError('Такой email уже существует'));
+        return;
+      }
+
       next(err);
     });
 };

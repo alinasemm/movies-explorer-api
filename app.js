@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./ routes');
 
@@ -21,6 +22,9 @@ mongoose.connect(databaseUrl, {
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://alina-movies-explorer.nomoredomains.club'],
+}));
 app.use(requestLogger);
 
 app.use(routes);

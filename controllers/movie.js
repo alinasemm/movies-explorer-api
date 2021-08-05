@@ -4,7 +4,7 @@ const AccessDeniedError = require('../errors/accessDeniedError');
 const NotFoundError = require('../errors/notFoundError');
 
 module.exports.getSavedMovies = (req, res, next) => {
-  Movie.find({})
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.send(movies))
     .catch((err) => {
       next(err);
